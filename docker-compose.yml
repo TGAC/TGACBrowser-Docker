@@ -2,8 +2,7 @@ version: '2.1'
 services:
   db_client:
     image: mysql:5.7.29
-    # command: sh -c "for f in $$(ls /data/); do mysqlimport -h db_serv -u root -ptgacbrowser tgac_browser_demo --local /data/$$f; done;"
-      # - mysqlimport -h db_serv -u root -ptgacbrowser --local tgac_browser_demo /data/seq_region.txt /data/coord_system.txt /data/meta.txt /data/gene.txt /data/exon.txt /data/transcript.txt /data/exon_transcript.txt /data/assembly.txt /data/analysis.txt /data/analysis_description.txt /data/seq_region_attrib.txt /data/seq_region_mapping.txt /data/karyotype.txt /data/seq_region_synonym.txt
+    command: sh -c "for f in $$(ls /data/); do mysqlimport -h db_serv -u root -ptgacbrowser tgac_browser_demo --local /data/$$f; done;"
     depends_on:
       db_serv:
         condition: service_healthy
