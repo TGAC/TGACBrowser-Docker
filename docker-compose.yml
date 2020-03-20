@@ -1,0 +1,52 @@
+version: '2.1'
+services:
+  db_client:
+    image: mysql:5.7.29
+    # command: sh -c "for f in $$(ls /data/); do mysqlimport -h db_serv -u root -ptgacbrowser tgac_browser_demo --local /data/$$f; done;"
+      # - mysqlimport -h db_serv -u root -ptgacbrowser --local tgac_browser_demo /data/seq_region.txt /data/coord_system.txt /data/meta.txt /data/gene.txt /data/exon.txt /data/transcript.txt /data/exon_transcript.txt /data/assembly.txt /data/analysis.txt /data/analysis_description.txt /data/seq_region_attrib.txt /data/seq_region_mapping.txt /data/karyotype.txt /data/seq_region_synonym.txt
+    depends_on:
+      db_serv:
+        condition: service_healthy
+    volumes:
+      - ./mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
+      - ./mysql-data:/data
+    environment:
+      MYSQL_ROOT_PASSWORD: tgacbrowser
+      MYSQL_USER: tgacbrowser
+      MYSQL_PASSWORD: tgacbrowser
+    ports:
+      - "3309:3306"
+
+  db_serv:
+    image: mysql:5.7.29
+    ports:
+      - "3308:3306"
+    expose:
+      - "3308"
+    volumes:
+      - ./mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
+      - ./mysql-dump:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: tgacbrowser
+      MYSQL_USER: tgacbrowser
+      MYSQL_PASSWORD: tgacbrowser
+      MYSQL_DATABASE: tgac_browser_demo
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  tb:
+    image: tomcat
+    command: 
+      - wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.10.0/ncbi-blast-2.10.0+-x64-linux.tar.gz
+      - tar zxvpf ncbi-blast-2.10.0+-x64-linux.tar.gz
+      # - rm ncbi-blast-2.10.0+-x64-linux.tar.gz
+    ports:
+      - "8888:8080"
+    volumes:
+      - ./annotations:/home/user/datafiles
+      - ./webapps:/usr/local/tomcat/webapps
+    depends_on:
+      db_serv:
+        condition: service_healthy
