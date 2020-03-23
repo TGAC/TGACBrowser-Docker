@@ -2,10 +2,10 @@
 This will allow running TGAC Browser locally.
 
 ## Download
-To download this particular repository run command git clone https://github.com/TGAC/TGACBrowser-Docker.git
+To download this particular repository run command `git clone https://github.com/TGAC/TGACBrowser-Docker.git`
 
 ## Start with demo dataset
-To start with demo dataset, go to the particular directory with TGACBrowser-Docker code and run command docker-compose up. It will take a while to start MySQL and Tomcat instances and load data, then open localhost:8888/tgac_browser_demo in your browser.
+To start with demo dataset, go to the particular directory with TGACBrowser-Docker code and run command `docker-compose up`. It will take a while to start MySQL and Tomcat instances and load data, then open localhost:8888/tgac_browser_demo in your browser.
 
 ## Custom data
 To add custom data from Ensembl download *.txt files from Ensembl ftp (ftp://ftp.ensembl.org/pub/release-XX/mysql/) in MySQL-data folder and make sure MySQL-dump is the one corresponding to the Ensembl release and name it tgac_browser_demo.
