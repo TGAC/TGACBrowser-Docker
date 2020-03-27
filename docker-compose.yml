@@ -24,24 +24,45 @@ services:
       - "3308"
     volumes:
       - ./mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
-      - ./mysql-dump:/docker-entrypoint-initdb.d
+      - ./mysql-dump/tgac_browser_demo.sql:/docker-entrypoint-initdb.d/tgac_browser_demo.sql
     environment:
       MYSQL_ROOT_PASSWORD: tgacbrowser
+      MYSQL_DATABASE: tgac_browser_demo
       MYSQL_USER: tgacbrowser
       MYSQL_PASSWORD: tgacbrowser
-      MYSQL_DATABASE: tgac_browser_demo
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  blast_db:
+    image: mysql:5.7.29
+    ports:
+      - "3310:3306"
+    expose:
+      - "3310"
+    volumes:
+      - ./mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
+      - ./mysql-dump/tgac_browser_demo_blast_manager.sql:/docker-entrypoint-initdb.d/tgac_browser_demo_blast_manager.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: tgacbrowser
+      MYSQL_DATABASE: tgac_browser_demo_blast_manager
+      MYSQL_USER: tgacbrowser
+      MYSQL_PASSWORD: tgacbrowser
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
 
   tb:
-    image: tomcat
+    build: .
     ports:
       - "8888:8080"
     volumes:
       - ./annotations:/home/user/datafiles
       - ./webapps:/usr/local/tomcat/webapps
+      - ./scripts:/usr/local/bin/scripts
+      - ./blast-files:/tmp
     depends_on:
       db_serv:
         condition: service_healthy
