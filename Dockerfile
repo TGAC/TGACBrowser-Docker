@@ -15,4 +15,4 @@ RUN mkdir /blastdb
 
 ADD blastdb /blastdb
 
-RUN /usr/local/bin/ncbi-blast-2.10.0+/bin/makeblastdb -dbtype nucl -in /blastdb/* && ls /blastdb
+RUN for f in $(ls /blastdb/); do /usr/local/bin/*ncbi*/bin/makeblastdb -dbtype nucl -in /blastdb/$f; done;
