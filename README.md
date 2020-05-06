@@ -10,6 +10,11 @@ To start with demo dataset, go to the particular directory with TGACBrowser-Dock
 ## Custom data
 To add custom data from Ensembl download *.txt files from Ensembl ftp (ftp://ftp.ensembl.org/pub/release-XX/mysql/) in MySQL-data folder and make sure MySQL-dump is the one corresponding to the Ensembl release and name it tgac_browser_demo.
 
+## BLAST functionality
+BLAST is configured to run locally within docker container, To enable on custom data put FASTA files in `blastdb` directory and stop running container and remove old TGAC Browser instance image using `docker rmi dbdocker_tb` command and restart the docker compose, it should take a while to download BLAST and generte databases. 
+
+BLAST will be available to use with sequence search and from annotation (if ref sequence available).
+
 ## Contact
 For any query please contact: tgac.browser@earlham.ac.uk
 
