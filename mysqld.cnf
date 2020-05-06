@@ -1,2 +1,3 @@
 [mysqld]
 local_infile				= 1
+max_allowed_packet			= 10000M
