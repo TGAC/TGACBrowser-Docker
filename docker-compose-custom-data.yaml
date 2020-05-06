@@ -1,0 +1,15 @@
+version: '2.1'
+services:
+  db_load:
+    image: bioperl/bioperl:latest
+    command:  sh -c "PERL5LIB=$${PERL5LIB}:/modules/ensembl/modules &&  PERL5LIB=$${PERL5LIB}:/modules/ensembl-pipeline/modules && export PERL5LIB && /scripts/loadEnsembl.sh"
+    # command:  sh -c "PERL5LIB=$${PERL5LIB}:/modules/ensembl/modules &&  PERL5LIB=$${PERL5LIB}:/modules/ensembl-pipeline/modules && export PERL5LIB && for f in $$(ls /data/); do perl /modules/ensembl-pipeline/scripts/load_seq_region.pl -dbhost db_serv -dbuser tgacbrowser -dbpass tgacbrowser -dbname tgac_browser_demo -coord_system_name test -rank 2 -default_version -sequence_level -fasta_file /data/$$f"
+    volumes:
+      - ./data:/data
+      - ./ensembl-modules:/modules
+      - ./scripts:/scripts
+    ports:
+      - "8989:80"
+    depends_on:
+      db_serv:
+        condition: service_healthy
