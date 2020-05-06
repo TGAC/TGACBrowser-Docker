@@ -1,6 +1,6 @@
 version: '2.1'
 services:
-  db_client:
+  db_load:
     image: mysql:5.7.29
     command: sh -c "for f in $$(ls /data/); do mysqlimport -h db_serv -u root -ptgacbrowser tgac_browser_demo --local /data/$$f; done;"
     depends_on:
