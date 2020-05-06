@@ -1,0 +1,6 @@
+[submodule "ensembl-modules/ensembl"]
+	path = ensembl-modules/ensembl
+	url = https://github.com/Ensembl/ensembl.git
+[submodule "ensembl-modules/ensembl-pipeline"]
+	path = ensembl-modules/ensembl-pipeline
+	url = https://github.com/Ensembl/ensembl-pipeline.git
